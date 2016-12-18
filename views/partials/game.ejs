@@ -1,0 +1,49 @@
+<div class="row hidden" id="game">
+    <div id="game-area" class="col-sm-12 col-md-8">
+        <div id="startGameDiv">
+            <h3>Waiting for Players to Join</h3>            
+            <p id="joinedPlayers"></p>
+            <button type="button" class="btn btn-warning" id="startGameBtn">Stop waiting, Start Gaming!!!</button>
+        </div>
+        <div id="gamePlayDiv" class="hidden">
+            <h3>
+                Welcome 
+                <strong><span class="username"></span></strong>
+                to 
+                <strong><span class="gameroomname"></span></strong>
+            </h3>
+            <hr>
+            <div id="lastWordDiv"></div>
+            <div id="statusDiv"></div>
+            <div id="remainingTilesDiv"></div>
+            <div id="wordDiv">
+                <input type="text" name="word" value="" placeholder="" id="wordText">
+                <input type="button" name="submitWord" value="Submit" id="submitWordBtn">
+                <input type="button" name="passGame" value="Pass" id="passGameBtn">
+                <input type="button" name="resetWord" value="Reset" id="resetWordBtn">
+            </div>
+            <div id="myLetters" class="text-center">
+                <div id="letters"></div>
+                <div class="row">
+                    <div class="container">
+                        Click on the letters. Use ONE letter from the Last Word.
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div id="game-meta" class="col-sm-12 col-md-4">
+		<div class="row">
+            <div class="container">
+                <h3>Points</h3>
+                <div id="points"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                <h3>History</h3>
+                <div id="history"></div>
+            </div>
+        </div>
+	</div>
+</div>

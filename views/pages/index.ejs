@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Post Scrabble</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../css/post-scrabble.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script type="text/javascript" src="../js/post-scrabble.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-scrabble">
+        <div class="container-fluid">
+            <div class="navbar-header navbar-header-scrabble">
+                <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                    <div>
+                        <a class="navbar-brand navbar-brand-scrabble" href="#">
+                            Post Scrabble
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+    	<div class="scrabble-body col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                <%- include('../partials/home') %>
+                <%- include('../partials/game') %>
+    	</div>
+    </div>
+    <footer class="container-fluid">
+        <div class="text-center">
+            &copy; Roopak A N
+        </div>
+    </footer>
+</body>
+
+</html>

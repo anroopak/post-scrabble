@@ -1,0 +1,33 @@
+<div class="row" id="home">
+	<div id="login-area" class="col-sm-12 col-md-6">
+		<div class="row">
+			<div class="container">
+				<h3>
+				A Game of Words!!!
+				</h3>
+			</div>
+		</div>
+		<div id="login-page">
+			<div class="form-group">
+				<label for="usernameTxt">Username</label>
+				<input type="text" name="username" placeholder="Username" class="form-control" id="usernameTxt">
+			</div>
+			<button type="button" class="btn btn-default" id="signInBtn">Sign-In</button>
+			<div class="alert alert-danger hidden" role="alert" id="alertSignIn"></div>
+		</div>
+		<div id="logged-in-page" class="hidden">
+			<h3>Welcome <strong><span class="username"></span></strong></h3>
+			<h4>Start a new Game Room ???</h4>
+			<div class="form-group">
+				<label for="gameRoomNameTxt">Game Room Name</label>
+				<input type="text" name="gameroomname" placeholder="Name of the Gameroom" class="form-control" id="gameRoomNameTxt">
+			</div>
+			<button type="button" class="btn btn-default" id="createGameBtn">Start game</button>
+			<div class="alert alert-danger hidden" role="alert" id="alertCreateGameRoom"></div>
+		</div>
+	</div>
+	<div id="game-list" class="col-sm-12 col-md-6">
+		<h4 id="noGameMsg">No game rooms to list.</h4>
+		<p></p>
+	</div>
+</div>

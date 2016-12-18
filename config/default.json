@@ -1,0 +1,8 @@
+{
+	"port": 3000,
+	"mongodb": {
+		"host": "mongodb://localhost/postscrabble",
+		"debug": true,
+		"poolSize": 10
+	}
+}

@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald|Slabo+27px');
+
+/*
+font-family: 'Oswald', sans-serif;
+font-family: 'Slabo 27px', serif;
+*/
+
+body {
+    background-color: #eceff1;
+    font-family: 'Slabo 27px', serif;
+}
+
+.navbar-scrabble {
+    background-color: #37474f;
+    border-color: #37474f;
+    border-bottom: thick solid #455a64;
+    color: #ffffff;
+    border-radius: 0px;
+    box-shadow: 0 5px 5px rgba(69, 90, 100, 0.30);
+}
+
+.navbar-header-scrabble {
+    width: 100%
+}
+
+.navbar-default .navbar-brand-scrabble,
+.navbar-default .navbar-brand-scrabble:hover,
+.navbar-default .navbar-brand-scrabble:focus {
+    font-family: 'Oswald', sans-seif;
+    color: #fb8c00;
+    font-size: 1.6em;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+}
+
+.scrabble-body {
+    background-color: #ffffff;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0 0 10px rgba(69, 90, 100, 0.5);
+    font-family: 'Slabo 27px', serif;
+}
+
+.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
+}
+
+.material-icons.md-dark {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.material-icons.md-dark.md-inactive {
+    color: rgba(0, 0, 0, 0.26);
+}
+
+.material-icons.md-light {
+    color: rgba(255, 255, 255, 1);
+}
+
+.material-icons.md-light.md-inactive {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+#login-area, #game-area {
+    border-right: thin solid #000;
+}
+
+footer {
+    margin-bottom: 5px;
+}
+
+#myLetters  {
+    padding: 30px;
+}
+
+
+.letter {
+    background-color: #ffff00;
+    padding: 10px;
+    font-size: 1.3em;
+    border-right: thin solid #fff;
+    cursor: pointer;
+}
+.letter:hover {
+    background-color: #ffea00;
+}
