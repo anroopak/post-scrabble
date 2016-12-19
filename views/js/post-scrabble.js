@@ -142,6 +142,8 @@ $(document).ready(() => {
 		$("#game").addClass("hidden");
 		$("#gamePlayDiv").addClass("hidden");
 		$("#results").addClass("hidden");
+		$("#points").html();
+		$("#history").html();
 	});
 
 	socket.on('gameRoomList', data => {

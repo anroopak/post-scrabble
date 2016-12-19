@@ -1,3 +1,7 @@
+/**
+ * Handles all Game and Control events.
+ */
+
 "use strict";
 const logger = require('../utils/logger.js')();
 const GameRoom = require('../models/game-room.js');
@@ -14,7 +18,9 @@ function setEvents(io) {
 			rooms: Object.keys(gameRooms)
 		});
 
-
+		/**
+		 * User Login 
+		 */
 		socket.on('login', data => {
 			// TODO: Perform checking User. 
 			socket.handshake.session.user = {
@@ -25,6 +31,8 @@ function setEvents(io) {
 				status: true
 			});
 		});
+
+		
 		socket.on('control', data => {
 			try {
 				let gameRoom = null;
