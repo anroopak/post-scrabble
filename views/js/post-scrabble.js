@@ -134,6 +134,16 @@ $(document).ready(() => {
 		}
 	});
 
+	$("#newGameBtn").click(function() {
+		$("#home").removeClass("hidden");
+		$("s#tartGameDiv").removeClass("hidden");
+		$("#playing").removeClass("hidden");
+
+		$("#game").addClass("hidden");
+		$("#gamePlayDiv").addClass("hidden");
+		$("#results").addClass("hidden");
+	});
+
 	socket.on('gameRoomList', data => {
 		console.log(data);
 		if (data.rooms.length === 0) {
@@ -183,6 +193,10 @@ $(document).ready(() => {
 					if (GameRoom.owner !== username) {
 						$("#startGameBtn").addClass("hidden");
 					}
+				} else {
+					$("#alertCreateGameRoom")
+						.html("Cannot Join | " + data.message)
+						.removeClass("hidden");
 				}
 		}
 	});

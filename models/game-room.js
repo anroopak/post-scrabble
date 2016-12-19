@@ -46,7 +46,9 @@ class GameRoom {
 	}
 
 	joinRoom(member) {
-		// console.log(this._members);
+		if (this._started) {
+			throw PostScrabbleRooms.RoomAlreadyStarted();
+		}
 		if (Object.keys(this._members).length === MAX_MEMBER_COUNT) {
 			throw PostScrabbleRooms.RoomMemberCountExceeded();
 		}
@@ -238,6 +240,7 @@ class GameRoom {
 		// TODO: check if already started
 		// TODO: check if creator is starting
 		// Init Tiles
+		this._started = true;
 		let tilesForUsers = {};
 		for (let userId in this._members) {
 			let tiles = this.getNextSetTiles(MAX_TILES_PER_USER);

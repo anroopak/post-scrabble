@@ -17,6 +17,10 @@ class PostScrabbleErrors {
 	static RoomDoesntExist(){
 		return new Error("ROOM_DOESNT_EXIST");
 	}
+
+	static RoomAlreadyStarted(){
+		return new Error("ROOM_GAME_STARTED");
+	}
 }
 
 module.exports = PostScrabbleErrors;
