@@ -58,6 +58,7 @@ function setEvents(io) {
 							throw PostScrabbleErrors.RoomDoesntExist();
 						}
 						gameRoom = gameRooms[gameRoomName];
+						socket.handshake.session.gameRoom = gameRoom;
 						gameRoom.joinRoom(socket.handshake.session.user);
 						socket.join(gameRoom.name);
 						socket.emit('control', {
@@ -111,7 +112,17 @@ function setEvents(io) {
 				console.log(data);
 				switch (data.operation) {
 					case 'placeWord':
-						GameLogic.placeWord(socket, data);
+						let gameRoom = socket.handshake.session.gameRoom;
+						let points = GameLogic.placeWord(socket, data);
+						io.sockets.to(gameRoom.name).emit('game', {
+							operation: 'wordPlaced',
+							status: true,
+							user: socket.handshake.session.user,
+							word: data.word,
+							wordLetters: data.wordLetters,
+							points: points, 
+							nextUser: gameRoom.currentUser
+						});
 						break;
 				}
 			} catch (e) {

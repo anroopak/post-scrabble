@@ -164,38 +164,52 @@ class GameRoom {
 	}
 
 	addWord(user, word, lastWordLetter) {
-		if (this.lastWord) {
-			this.lastWord.indexOf(lastWordLetter).should.notEqual(-1);
-		}
+		// if (this.lastWord) {
+		// 	this.lastWord.indexOf(lastWordLetter).should.not.equal(-1);
+		// }
+
 		this._words.push({
 			user: user,
 			word: word
 		});
+
 		this.addToUsedTiles(word);
 		this.removeFromRemainingTiles(word);
 
 		let lettersToRemove = word.split('');
-		lettersToRemove.splice(lettersToRemove.indexOf(lastWordLetter), 1);
+		if (lastWordLetter) {
+			lettersToRemove.splice(lettersToRemove.indexOf(lastWordLetter), 1);
+		}
+
 		this.removeTilesFromUser(user, lettersToRemove);
-		this.addPointsToUser(user, lettersToRemove);
 		this.lastWord = word;
+
+		let points = this.addPointsToUser(user, lettersToRemove);
+		return points;
 	}
 
 	addPointsToUser(user, letters) {
 		let points = 0;
+		console.log("letters : " + JSON.stringify(letters));
 		for (let i = letters.length - 1; i >= 0; i--) {
+			console.log(letters[i] + ".points : " + JSON.stringify(ALL_TILES[letters[i]].points));
 			points += ALL_TILES[letters[i]].points;
 		}
 
 		if (!this._members[user.id].points) this._members[user.id].points = 0;
 		this._members[user.id].points += points;
+		return points;
 	}
 
 	getNextSetTiles(lastWordCount) {
 		let nextSet = [];
 		for (let i = lastWordCount - 1; i >= 0; i--) {
 			let index = randomInt(this.lettersRemaining.length - 1);
-			nextSet.push(this.lettersRemaining[index]);
+			let c = this.lettersRemaining[index];
+			nextSet.push({
+				letter: c,
+				points: ALL_TILES[c].points
+			});
 			this.removeFromRemainingTiles(String(this.lettersRemaining[index]));
 		}
 		return nextSet;
@@ -209,10 +223,12 @@ class GameRoom {
 	removeTilesFromUser(user, lettersToRemove) {
 		console.log("this._members[user.id] : " + JSON.stringify(this._members[user.id]));
 		let existingLetters = this._members[user.id].letters;
-		console.log("existingLetters : " + JSON.stringify(existingLetters));
-		console.log(typeof existingLetters);
 		for (let i = lettersToRemove.length - 1; i >= 0; i--) {
-			existingLetters.splice(existingLetters.indexOf(lettersToRemove[i]));
+			for (let j = existingLetters.length - 1; j >= 0; j--) {
+				if (existingLetters[j].letter === lettersToRemove[i]) {
+					existingLetters.splice(j, 1);
+				}
+			}
 		}
 		this._members[user.id].letters = existingLetters;
 	}

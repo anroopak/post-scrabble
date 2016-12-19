@@ -5,15 +5,21 @@ const GameRoom = require('../models/game-room.js');
 function placeWord(socket, data) {
 	let gameRoom = socket.handshake.session.gameRoom;
 	let user = socket.handshake.session.user;
-	gameRoom.addWord(user, data.word, data.lastWordLetter);
+	let points = gameRoom.addWord(user, data.word, data.lastWordLetter);
 	let lastWordLength = data.lastWordLetter ? data.word.length - 1 : data.word.length;
-	let nextSetTiles = gameRoom.getNextSetTiles(data.word.length);
+	let nextSetTiles = gameRoom.getNextSetTiles(lastWordLength);
+
+	gameRoom.currentUserIndex++;
 	logger.debug(user.name + " posted " + data.word);
+
 	socket.handshake.session.gameRoom = gameRoom;
-	socket.to(gameRoom.name).emit('game', {
+	socket.emit('game', {
 		operation: 'nextSetTiles',
-		tiles: nextSetTiles
+		tiles: nextSetTiles,
+		points: points
 	});
+
+	return points;
 }
 
 module.exports = {

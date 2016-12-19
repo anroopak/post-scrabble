@@ -8,39 +8,47 @@
         <div id="gamePlayDiv" class="hidden">
             <h3>
                 Welcome 
-                <strong><span class="username"></span></strong>
+                <strong><span class="username"></span></strong>,
                 to 
-                <strong><span class="gameroomname"></span></strong>
+                Gameroom <strong><span class="gameroomname"></span></strong>
+                <input type="button" name="passGame" value="Pass" id="passGameBtn" class="btn btn-danger">
             </h3>
             <hr>
             <div id="lastWordDiv"></div>
             <div id="statusDiv"></div>
             <div id="remainingTilesDiv"></div>
             <div id="wordDiv">
-                <input type="text" name="word" value="" placeholder="" id="wordText">
-                <input type="button" name="submitWord" value="Submit" id="submitWordBtn">
-                <input type="button" name="passGame" value="Pass" id="passGameBtn">
-                <input type="button" name="resetWord" value="Reset" id="resetWordBtn">
-            </div>
-            <div id="myLetters" class="text-center">
-                <div id="letters"></div>
+                <div class="form-group">
+                        <input type="text" name="word" class="form-control" id="wordText">
+                </div>
                 <div class="row">
-                    <div class="container">
-                        Click on the letters. Use ONE letter from the Last Word.
+                    <div class="col-sm-12 col-md-6">
+                        <input type="button" name="resetWord" value="Reset" id="resetWordBtn" class="btn btn-default form-control">
                     </div>
+                    <div class="col-sm-12 col-md-6">
+                        <input type="button" name="submitWord" value="Submit" id="submitWordBtn" class="btn btn-warning form-control">
+                    </div>
+                </div>
+            </div>
+            <div id="myLetters">
+                <div class="row">
+                    <div id="letters"></div>
+                    <p>
+                        Click on the letters. Use ONE letter from the Last Word.
+                    </p>
                 </div>
             </div>
         </div>
 	</div>
 	<div id="game-meta" class="col-sm-12 col-md-4">
 		<div class="row">
-            <div class="container">
+            <div class="col-sm-12">
                 <h3>Points</h3>
                 <div id="points"></div>
             </div>
         </div>
         <div class="row">
-            <div class="container">
+            <div class="col-sm-12">
                 <h3>History</h3>
                 <div id="history"></div>
             </div>

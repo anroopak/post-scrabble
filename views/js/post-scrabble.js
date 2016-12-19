@@ -9,6 +9,10 @@ let username = null;
 let GameRoom = {};
 let gameroomname = null;
 let isGameRoomCreated = false;
+let lastWord = [];
+let myWord = "";
+let myWordLetters = [];
+let lastWordLetter = null;
 
 $(document).ready(() => {
 
@@ -62,6 +66,39 @@ $(document).ready(() => {
 				name: gameroomname
 			});
 		}
+	});
+
+	// Letters chosen
+	$('#myLetters').bind('click', '.letter', function(e) {
+		if (GameRoom.currentUser === username && $(e.target).is('.letter')) {
+			let letter = $(e.target).find('span').text();
+			let points = $(e.target).find('sub').text();
+			myWord += letter;
+			myWordLetters.push({
+				letter: letter,
+				points: points
+			});
+			$("#wordText").val(myWord);
+			$(e.target).addClass("hidden");
+		}
+	});
+
+	// Reset Button
+	$('#resetWordBtn').click(() => {
+		myWord = "";
+		myWordLetters = [];
+		$("#wordText").val(myWord);
+		$(".letter").removeClass("hidden");
+	});
+
+	$("#submitWordBtn").click(() => {
+		socket.emit('game', {
+			operation: 'placeWord',
+			word: myWord,
+			wordLetters: myWordLetters,
+			lastWordLetter: lastWordLetter
+		});
+		removeMyTiles(myWord);
 	});
 
 	socket.on('gameRoomList', data => {
@@ -120,25 +157,116 @@ $(document).ready(() => {
 		console.log(data);
 		let s = "";
 		switch (data.operation) {
-			case 'playerJoined': 
+			case 'playerJoined':
 				s = "";
-				for(let key in data.members) {
+				for (let key in data.members) {
 					s += '<strong>' + data.members[key].name + '<strong>, ';
 				}
 				$("#joinedPlayers").html(s + ' joined.');
-				$("#history").append('<p>'+data.newMember+' joined</p>');
+
+				updateHistory(data.newMember.name + ' joined.');
+				updatePointsTable(data.newMember, 0);
 				break;
+
 			case 'startGame':
-				let tiles = data.tiles;
 				GameRoom.currentUser = data.startUser.name;
-				s = "";
-				for (let i = tiles[username].length - 1; i >= 0; i--) {
-					s += '<span class="letter"><span>' + tiles[username][i] + '</span><sub>1</sub></span>';
-				}
-				$("#letters").html(s);
+				GameRoom.myTiles = data.tiles[username];
+
 				$("#startGameDiv").addClass("hidden");
 				$("#gamePlayDiv").removeClass("hidden");
-				$("#statusDiv").html('Now playing : <strong>'+GameRoom.currentUser+'</strong>');
+
+				updateHistory('Game started.');
+				updateMyLetters();
+				updateLastWord();
+				updateGameControl();
+				updateCurrentUser();
+
+				break;
+
+			case 'wordPlaced':
+				GameRoom.currentUser = data.nextUser.name;
+				GameRoom.lastWord = data.word;
+				GameRoom.lastWordLetters = data.wordLetters;
+
+				updateHistory(data.user.name + ' placed <strong>' + GameRoom.lastWord + '</strong>');
+				updatePointsTable(data.user, data.points);
+				updateGameControl();
+				updateLastWord();
+				break;
+
+			case 'nextSetTiles':
+				GameRoom.myTiles = GameRoom.myTiles.concat(data.tiles);
+				updateMyLetters();
+
 		}
 	});
 });
+
+function updateHistory(text) {
+	$("#history").prepend('<p>' + text + '</p>');
+}
+
+function updateCurrentUser() {
+	$("#statusDiv").html('<h4>Now playing : <strong>' + GameRoom.currentUser + '</strong></h4>');
+}
+
+function updateMyLetters() {
+	let s = "<h4>My Letters : ";
+	for (let i = 0; i < GameRoom.myTiles.length; i++) {
+		s += '<span class="letter"><span>' + GameRoom.myTiles[i].letter;
+		s += '</span><sub>' + GameRoom.myTiles[i].points + '</sub></span>';
+	}
+	s += '</h4>';
+	$("#letters").html(s);
+}
+
+function updateLastWord() {
+	let s = "<h4>Last Word : ";
+	if (!GameRoom.lastWordLetters || GameRoom.lastWordLetters.length === 0) {
+		s += "__";
+	} else {
+		for (let i = 0; i < GameRoom.lastWordLetters.length; i++) {
+			s += '<span class="letter"><span>' + String(GameRoom.lastWordLetters[i].letter).toUpperCase();
+			s += '</span><sub>' + GameRoom.lastWordLetters[i].points + '</sub></span>';
+		}
+	}
+	s += '</h4>';
+	$("#lastWordDiv").html(s);
+}
+
+function removeMyTiles(word) {
+	let letters = word.split('');
+	for (let i = letters.length - 1; i >= 0; i--) {
+		for (let j = GameRoom.myTiles.length - 1; j >= 0; j--) {
+			if (GameRoom.myTiles[j].letter === letters[i]) {
+				GameRoom.myTiles.splice(j, 1);
+			}
+		}
+	}
+}
+
+function updateGameControl() {
+	console.log("GameRoom.currentUser : " + JSON.stringify(GameRoom.currentUser));
+	console.log("username : " + JSON.stringify(username));
+	if (GameRoom.currentUser === username) {
+		$("#wordDiv").show().animate();
+	} else {
+		$("#wordDiv").hide().animate();
+	}
+}
+
+function updatePointsTable(user, points) {
+	if (!GameRoom.hasOwnProperty('points')) GameRoom.points = {};
+	if (!GameRoom.points.hasOwnProperty(user.name)) GameRoom.points[user.name] = 0;
+	GameRoom.points[user.name] += points;
+
+	let sorted = Object.keys(GameRoom.points).sort((a, b) => GameRoom.points[a] - GameRoom.points[b]);
+
+	let s = '<table class="table table-striped table-responsive">';
+	s += '<thead><tr><th>#</th><th>Username</th><th>Points</th></tr></thead><tbody>';
+	for (let i = sorted.length - 1, j = 1; i >= 0; i--, j++) {
+		s += '<tr><td>' + j + '</td><td>' + sorted[i] + '</td><td>' + GameRoom.points[sorted[i]] + '</td></tr>';
+	}
+	s += '</tbody></table>';
+	$("#points").html(s);
+}
