@@ -9,6 +9,16 @@
 ## Requirements
 1. Node 6+
 
+## Setup
+```
+$ npm install
+```
+
+## Starting Server
+```
+$ node index.js
+```
+
 ## Missing Items
 1. End Game - a trigger to end game. 
 2. Pass Turn feature
