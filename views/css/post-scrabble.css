@@ -97,3 +97,7 @@ footer {
 .letter:hover {
     background-color: #ffea00;
 }
+
+.letter-clicked {
+    background-color: #ff6f00;
+}

@@ -177,6 +177,8 @@ class GameRoom {
 		this.removeFromRemainingTiles(word);
 
 		let lettersToRemove = word.split('');
+		let points = this.addPointsToUser(user, lettersToRemove);
+
 		if (lastWordLetter) {
 			lettersToRemove.splice(lettersToRemove.indexOf(lastWordLetter), 1);
 		}
@@ -184,7 +186,6 @@ class GameRoom {
 		this.removeTilesFromUser(user, lettersToRemove);
 		this.lastWord = word;
 
-		let points = this.addPointsToUser(user, lettersToRemove);
 		return points;
 	}
 

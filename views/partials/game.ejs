@@ -12,31 +12,38 @@
                 to 
                 Gameroom <strong><span class="gameroomname"></span></strong>
                 <input type="button" name="passGame" value="Pass" id="passGameBtn" class="btn btn-danger">
+                <button type="button" id="endGameBtn" class="btn btn-danger hidden">End Game</button>
             </h3>
             <hr>
-            <div id="lastWordDiv"></div>
-            <div id="statusDiv"></div>
-            <div id="remainingTilesDiv"></div>
-            <div id="wordDiv">
-                <div class="form-group">
-                        <input type="text" name="word" class="form-control" id="wordText">
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <input type="button" name="resetWord" value="Reset" id="resetWordBtn" class="btn btn-default form-control">
+            <div id="playing">
+                <div id="lastWordDiv"></div>
+                <div id="statusDiv"></div>
+                <div id="remainingTilesDiv"></div>
+                <div id="wordDiv">
+                    <div class="form-group">
+                            <input type="text" name="word" class="form-control" id="wordText">
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <input type="button" name="submitWord" value="Submit" id="submitWordBtn" class="btn btn-warning form-control">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <input type="button" name="resetWord" value="Reset" id="resetWordBtn" class="btn btn-default form-control">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <input type="button" name="submitWord" value="Submit" id="submitWordBtn" class="btn btn-warning form-control">
+                        </div>
+                    </div>
+                </div>
+                <div id="myLetters">
+                    <div class="row">
+                        <div id="letters"></div>
+                        <p>
+                            Click on the letters. Use ONE letter from the Last Word.
+                        </p>
                     </div>
                 </div>
             </div>
-            <div id="myLetters">
-                <div class="row">
-                    <div id="letters"></div>
-                    <p>
-                        Click on the letters. Use ONE letter from the Last Word.
-                    </p>
-                </div>
+            <div id="results" class="hidden">
+                <div></div>
+                <button type="button" id="newGame" class="btn btn-danger">Back to New Game</button>
             </div>
         </div>
 	</div>

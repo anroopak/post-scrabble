@@ -83,12 +83,30 @@ $(document).ready(() => {
 		}
 	});
 
+	// Letters chosen
+	$('#lastWordDiv').bind('click', '.letter', function(e) {
+		if (GameRoom.currentUser === username && $(e.target).is('.letter') && !lastWordLetter) {
+			let letter = $(e.target).find('span').text();
+			let points = $(e.target).find('sub').text();
+			myWord += letter;
+			myWordLetters.push({
+				letter: letter,
+				points: points
+			});
+			$("#wordText").val(myWord);
+			$(e.target).addClass("letter-clicked");
+			lastWordLetter = letter;
+		}
+	});
+
 	// Reset Button
 	$('#resetWordBtn').click(() => {
 		myWord = "";
 		myWordLetters = [];
+		lastWordLetter = null;
 		$("#wordText").val(myWord);
 		$(".letter").removeClass("hidden");
+		$(".letter").removeClass("letter-clicked");
 	});
 
 	$("#submitWordBtn").click(() => {
@@ -99,6 +117,21 @@ $(document).ready(() => {
 			lastWordLetter: lastWordLetter
 		});
 		removeMyTiles(myWord);
+	});
+
+	$("#passGameBtn").click(function() {
+		socket.emit('game', {
+			operation: 'passGame'
+		});
+	});
+
+	$("#endGameBtn").click(function() {
+		console.log("GameRoom.owner : " + JSON.stringify(GameRoom.owner));
+		if (GameRoom.owner === username) {
+			socket.emit('game', {
+				operation: 'endGame'
+			});
+		}
 	});
 
 	socket.on('gameRoomList', data => {
@@ -129,6 +162,7 @@ $(document).ready(() => {
 				if (data.status === true) {
 					isGameRoomCreated = true;
 					GameRoom.name = gameroomname;
+					GameRoom.owner = username;
 					$(".gameroomname").html(gameroomname);
 					$("#home").addClass("hidden");
 					$("#game").removeClass("hidden");
@@ -174,6 +208,9 @@ $(document).ready(() => {
 
 				$("#startGameDiv").addClass("hidden");
 				$("#gamePlayDiv").removeClass("hidden");
+				if (GameRoom.owner === username) {
+					$("#endGameBtn").removeClass("hidden");
+				}
 
 				updateHistory('Game started.');
 				updateMyLetters();
@@ -188,16 +225,43 @@ $(document).ready(() => {
 				GameRoom.lastWord = data.word;
 				GameRoom.lastWordLetters = data.wordLetters;
 
+				$("#wordText").val("");
+
+				myWord = "";
+				myWordLetters = [];
+				lastWordLetter = null;
+
 				updateHistory(data.user.name + ' placed <strong>' + GameRoom.lastWord + '</strong>');
 				updatePointsTable(data.user, data.points);
 				updateGameControl();
 				updateLastWord();
 				break;
 
+			case 'passGame':
+				GameRoom.currentUser = data.nextUser.name;
+
+				$("#wordText").val("");
+
+				myWord = "";
+				myWordLetters = [];
+				lastWordLetter = null;
+
+				updateHistory(data.user.name + ' passed chance.');
+				updateGameControl();
+				break;
+
 			case 'nextSetTiles':
 				GameRoom.myTiles = GameRoom.myTiles.concat(data.tiles);
 				updateMyLetters();
+				break;
 
+			case 'endGame':
+				GameRoom = {};
+				$("#playing").addClass("hidden");
+				$("#passGameBtn").addClass("hidden");
+				$("#endGameBtn").addClass("hidden");
+				$("#results").removeClass("hidden");
+				updateHistory('Game ended.');
 		}
 	});
 });
@@ -236,10 +300,12 @@ function updateLastWord() {
 
 function removeMyTiles(word) {
 	let letters = word.split('');
+	if (lastWordLetter) letters.splice(letters.indexOf(lastWordLetter), 1);
 	for (let i = letters.length - 1; i >= 0; i--) {
 		for (let j = GameRoom.myTiles.length - 1; j >= 0; j--) {
 			if (GameRoom.myTiles[j].letter === letters[i]) {
 				GameRoom.myTiles.splice(j, 1);
+				letters.splice(i, 1);
 			}
 		}
 	}
@@ -269,4 +335,5 @@ function updatePointsTable(user, points) {
 	}
 	s += '</tbody></table>';
 	$("#points").html(s);
+	$("#results div").html(s);
 }

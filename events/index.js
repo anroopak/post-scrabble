@@ -34,7 +34,7 @@ function setEvents(io) {
 							throw PostScrabbleErrors.RoomAlreadyExist();
 						}
 						gameRoom = new GameRoom({
-							owner: data.name,
+							owner: socket.handshake.session.user.name,
 							name: data.name,
 							members: [socket.handshake.session.user]
 						});
@@ -109,10 +109,11 @@ function setEvents(io) {
 		});
 		socket.on('game', data => {
 			try {
+				let gameRoom = null;
 				console.log(data);
 				switch (data.operation) {
 					case 'placeWord':
-						let gameRoom = socket.handshake.session.gameRoom;
+						gameRoom = socket.handshake.session.gameRoom;
 						let points = GameLogic.placeWord(socket, data);
 						io.sockets.to(gameRoom.name).emit('game', {
 							operation: 'wordPlaced',
@@ -120,9 +121,33 @@ function setEvents(io) {
 							user: socket.handshake.session.user,
 							word: data.word,
 							wordLetters: data.wordLetters,
-							points: points, 
+							points: points,
 							nextUser: gameRoom.currentUser
 						});
+						break;
+					case 'passGame':
+						gameRoom = socket.handshake.session.gameRoom;
+						gameRoom.currentUserIndex++;
+						io.sockets.to(gameRoom.name).emit('game', {
+							operation: 'passGame',
+							status: true,
+							user: socket.handshake.session.user,
+							nextUser: gameRoom.currentUser
+						});
+						break;
+					case 'endGame':
+						gameRoom = socket.handshake.session.gameRoom;
+						if (gameRoom.owner === socket.handshake.session.user.name) {
+							io.sockets.to(gameRoom.name).emit('game', {
+								operation: 'endGame',
+								status: true
+							});
+							delete socket.handshake.session.gameRoom;
+							delete gameRooms[gameRoom.name];
+							socket.broadcast.emit('gameRoomList', {
+								rooms: Object.keys(gameRooms)
+							});
+						}
 						break;
 				}
 			} catch (e) {
