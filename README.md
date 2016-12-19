@@ -6,6 +6,9 @@
 3. On their turn, each player is supposed to create a meaningful name using their tiles, and one of the tiles from last word. 
 4. Points assigned to each tile is added to a player, when the tile is used. 
 
+## Requirements
+1. Node 6+
+
 ## Missing Items
 1. End Game - a trigger to end game. 
 2. Pass Turn feature
