@@ -20,9 +20,7 @@ $ node index.js
 ```
 
 ## Missing Items
-1. End Game - a trigger to end game. 
-2. Pass Turn feature
-3. Moderated Game rooms - Owner can moderate the users. 
+1. Moderated Game rooms - Owner can moderate the users. 
 
 ## TODO:
 1. Use DB to store the User, Gameroom details (now, in-memory)
